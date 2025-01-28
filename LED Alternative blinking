@@ -1,0 +1,21 @@
+#include<LPC21xx.h>
+#define LED1 0x00000001
+#define LED2 0x00000002
+void delay(int sec){
+T0PR=15000000-1;
+T0TCR=0x01;
+while(T0TC<sec);
+T0TCR=0x03;
+T0TCR=0x00;
+}
+int main(){
+IODIR0=LED1|LED2;
+while(1){
+IOSET0=LED1;
+IOCLR0=LED2;
+delay(1);
+IOCLR0=LED1;
+IOSET0=LED2;
+delay(1);
+}
+}
