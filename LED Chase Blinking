@@ -1,0 +1,38 @@
+#include <LPC21xx.H>
+//This function create a half second delay
+void delay(int sec){
+        T0PR=15000-1;
+        T0TCR=0x01;
+        while(T0TC<sec);
+        T0TCR=0x03;
+        T0TCR=0x00;
+}
+//This function is for blink the LED in Forward direction up to 8 Ports
+void forward(unsigned char pin[8]){
+        int i;
+        for(i=0;i<=7;i++){
+                IOSET0=pin[i];
+                delay(500);
+                IOCLR0=pin[i];
+        }
+}
+//This function is for blink the LED in Reverse direction up to 8 Ports
+void reverse(unsigned char pin[8]){
+        int i;
+        for(i=7;i>=0;i--){
+                IOSET0=pin[i];
+                delay(500);
+                IOCLR0=pin[i];
+        }
+}
+int main(){
+        //Declare 8 Pins HEX value in array name pin for ON and OFF the LED
+        unsigned char pin[8]={0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80};
+        PINSEL0=0x00000000;//Declare Port 0 all Pins as an output functionality
+        IODIR0=0x000000FF;//Declare Port 0 first 8 Pins as an output
+  //This loop run infinitly
+        while(1){
+                forward(pin);//Call forward function with passing array(pin) parameter
+                reverse(pin);//call reverse function with passing array(pin) parameter
+                        }
+}
